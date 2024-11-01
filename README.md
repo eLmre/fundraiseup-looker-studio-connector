@@ -1,4 +1,4 @@
-FundraiseUp REST API - Looker Studio Conntector
+FundraiseUp REST API - Looker Studio Connector
 =============
 This repository contains a [community connector](https://developers.google.com/looker-studio/connector "community connector") script to fetch donations data from FundraiseUp and visualize it in Looker Studio using Google Apps Script.
 
