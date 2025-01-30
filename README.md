@@ -1,15 +1,15 @@
-FundraiseUp REST API - Looker Studio Connector
+Fundraise Up REST API - Looker Studio Connector
 =============
 This repository contains a [community connector](https://developers.google.com/looker-studio/connector "community connector") script to fetch donations data from FundraiseUp and visualize it in Looker Studio using Google Apps Script.
 
-For a detailed walkthrough of FundraiseUp REST API, check out [documentation](https://fundraiseup.com/docs/rest-api/ "documentation").
+For a detailed walkthrough of Fundraise Up REST API, check out [documentation](https://fundraiseup.com/docs/rest-api/ "documentation").
 
 Features
 -------------
 - Fetch dynamic donations data based on API key input.
 - No authentication required.
 - Seamlessly integrates with Looker Studio for data visualization.
-- Stable works with scheduled email delivery.
+- Google Sheets Support - automatically adds new rows to the sheet.
 
 Usage
 -------------
@@ -20,9 +20,16 @@ Usage
 
 #### Integration in Looker Studio
 - Use the deployed script URL as the data source in Looker Studio.
-- To obtain API key open [FundraiseUp Dashboard](https://dashboard.fundraiseup.com/ "FundraiseUp Dashboard") > Settings > API keys and click Create API key.
+- To obtain API key open [Fundraise Up Dashboard](https://dashboard.fundraiseup.com/ "Fundraise Up Dashboard") > Settings > API keys and click Create API key.
 - Configure the data source by specifying the desired API key.
 - Visualize the fetched data using Looker Studio tools.
+
+#### Connect Google Spreadsheet
+- Create empty [Google Sreadsheet](https://docs.google.com/spreadsheets/ "Google Sreadsheet") file and copy file ID (The Sheet ID is the number that appears after the "gid=" in the URL.).
+- Edit config params in the ```SpreadSheet.gs``` file, paste the spreadsheet ID and sheet name.
+- In your Apps Script project, at the left, click Triggers ⏰, at the bottom right, click Add Trigger, select and configure the time-driven trigger which will run function ```runScheduledTask()```
+- You can also use your spreadsheet as a data source in Looker Studio. 
+
 
 Schema
 -------------
