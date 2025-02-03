@@ -1,8 +1,3 @@
-/**
-* Configuration for the script
-* How to get Spreadsheet ID: https://stackoverflow.com/questions/36061433/how-do-i-locate-a-google-spreadsheet-id
-* API Key optional, if key already saved in Google Script Properties, you can leave it empty.
-*/
 
 function runScheduledTask() {
   Logger.log('Run runScheduledTask()');
@@ -20,7 +15,7 @@ function runScheduledTask() {
   });
 }
 
-function updateSpreadsheet(config) {
+function updateSpreadsheet(config, request) {
   Logger.log('Run updateSpreadsheet()');
 
   var spreadsheetId = config?.spreadsheet_id;
@@ -42,15 +37,15 @@ function updateSpreadsheet(config) {
   //define field schema, which will be added to the row headers
   var headers = [];
 
-  var request = {};
+  var request = request || {};
 
   // In case we need to use another API key
   if (api_key) {
       request['api_key'] = api_key;
   }
 
-  var schema = getSchema( request );
-  request['fields'] = [];
+  var schema = getSchema({'api_key': api_key});
+  request['fields'] = request['fields'] || [];
 
   // add every field label to the headers array
   for ( var i = 0; i < schema.schema.length; i++ ) {
@@ -111,7 +106,7 @@ function updateSpreadsheet(config) {
           return false;
       }
 
-      console.log('updateSpreadsheet() - Latest Donation ID From Spreadsheet:', latestValue);
+      console.log('updateSpreadsheet() - Latest Donation ID:', latestValue);
 
       request['ending_before'] = latestValue;
   }
@@ -123,6 +118,12 @@ function updateSpreadsheet(config) {
     return false;
   }
 
+  if ( data.has_more ) {
+    // continue after 2 minutes
+    console.log('updateSpreadsheet() - Data fetching is not finished, schedule next run.');
+    Async.apply('updateSpreadsheet', [config, request], { after: 120000 });
+  }
+
   // Let's reverse this to keep the date order, latest donations are added to the end of the sheet.
   // Make sure reverse before buildRows() so that the variables in formulas have the correct row number.
   data['data'] = data.data.map(function(r){return r;}).reverse();
@@ -131,6 +132,7 @@ function updateSpreadsheet(config) {
 
   if( rows.length ) {
       sheet.getRange(last_row + 1, 1, rows.length, rows[0].length).setValues(rows);
+      console.log( 'updateSpreadsheet() - Spreadsheet has been successfully updated.' );
   }
 }
 

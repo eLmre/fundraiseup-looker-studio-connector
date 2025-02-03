@@ -107,7 +107,8 @@ let schema = [
 // Return the defined schema to Data Studio
 function getSchema(request) {
   Logger.log('Run getSchema()');
-  let data = fetchDataApi(request);
+  request.max_request_count = 1;
+  let data = fetchDataApi(request, true, false);
   let customFieldsSchema = buildCustomFieldsSchema(data);
   schema.push(...customFieldsSchema);
   return { schema: schema };
@@ -226,6 +227,7 @@ function fetchDataApi(request, skip_cache = false, write_cache = true) {
   }
 
   let request_count = 0;
+  let max_request_count = request.max_request_count || 300;
   let timer_second = Date.now();
   let timer_minute = Date.now();
   let overslept = 0;
@@ -267,7 +269,7 @@ function fetchDataApi(request, skip_cache = false, write_cache = true) {
       overslept = 0;
     }
 
-    console.log('fetchDataApi() - Page: '+ request_count +' URL:', url);
+    console.log('fetchDataApi() - Page: '+ request_count +' URL: ', url);
 
     let parsedResponse = requestURL( url, { headers: headers } );
 
@@ -291,7 +293,7 @@ function fetchDataApi(request, skip_cache = false, write_cache = true) {
     data.data.push(...parsedResponse.data);
     data.has_more = parsedResponse.has_more;
 
-    if (!parsedResponse.has_more) {
+    if ( !parsedResponse.has_more || request_count >= max_request_count ) {
       break;
     }
 
@@ -302,7 +304,7 @@ function fetchDataApi(request, skip_cache = false, write_cache = true) {
     }
 
     // Stop spam, no rush
-    Utilities.sleep(1000);
+    Utilities.sleep(3000);
 
   } while (data.has_more);
 
@@ -637,5 +639,3 @@ function parseFormula( field, request, row_number ) {
 
   return formula_string;
 }
-
-
