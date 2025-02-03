@@ -25,9 +25,9 @@ Usage
 - Visualize the fetched data using Looker Studio tools.
 
 #### Connect Google Spreadsheet
-- Create empty [Google Sreadsheet](https://docs.google.com/spreadsheets/ "Google Sreadsheet") file and copy file ID (The Sheet ID is the number that appears after the "gid=" in the URL.).
+- Create empty [Google Sreadsheet](https://docs.google.com/spreadsheets/ "Google Sreadsheet") and copy ID from URL.
 - Edit config params in the ```SpreadSheet.gs``` file, paste the spreadsheet ID and sheet name.
-- In your Apps Script project, at the left, click Triggers ⏰, at the bottom right, click Add Trigger, select and configure the time-driven trigger which will run function ```runScheduledTask()```
+- In your Apps Script project, at the left, click Triggers⏰, at the bottom right, click Add Trigger, select and configure the time-driven trigger which will run function ```runScheduledTask()```
 - You can also use your spreadsheet as a data source in Looker Studio. 
 
 
