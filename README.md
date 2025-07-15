@@ -37,8 +37,9 @@ Supports 100+ fields declared in documentation. Do not support ```questions``` f
 
 Example
 -------------
-An example of data visualize by Looker Studio report.
-![](https://iili.io/2nSwI2f.png)
+Example of data visualize by Looker Studio report.
+
+![Looker Studio Report Example](./Example.png)
 
 License
 -------------
